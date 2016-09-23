@@ -1,5 +1,6 @@
 package com.example.zhangqi.newtest.ui.Home;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import com.example.zhangqi.newtest.adapter.NewsListAdapter;
 import com.example.zhangqi.newtest.bean.NewsList;
 import com.example.zhangqi.newtest.manager.LoadStuatus;
 import com.example.zhangqi.newtest.ui.BaseActivity;
+import com.example.zhangqi.newtest.ui.deteil.DeteilActivity;
 
 import java.util.List;
 
@@ -18,12 +20,12 @@ import butterknife.Bind;
 /**
  * Created by zhangqi on 2016/9/12.
  */
-public class HomeActivity extends BaseActivity<HomePresenter, NewsList.NewsEntity> {
-
+public class HomeActivity extends BaseActivity<HomePresenter, List<NewsList.NewsEntity>> {
+    public static final String DATE = "date";
+    public static final String UID = "uid";
     @Bind(R.id.recy)
     RecyclerView mRecy;
     private NewsListAdapter mNewsListAdapter;
-    private LoadStuatus mLoadStuatus;
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -34,11 +36,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, NewsList.NewsEntit
         /**
          * 实现成功页面的View
          */
-        mLoadStuatus.addSuccessView(inflater.inflate(R.layout.activity_home, null));
+        mLoadStuatus.addSuccessView(inflater.inflate(R.layout.activity_home, null),this);
         /**
          * 绑定BaseView来实现页面点击加载
          */
-        mLoadStuatus.bindView(this);
         return mLoadStuatus;
     }
 
@@ -46,6 +47,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, NewsList.NewsEntit
     public void findView(View view) {
         mRecy.setLayoutManager(new LinearLayoutManager(this));
         mNewsListAdapter = new NewsListAdapter(this);
+        mNewsListAdapter.setOnItemClickListener(news -> {
+            Intent intent = new Intent(this, DeteilActivity.class);
+            intent.putExtra(DATE,news.getDate());
+            intent.putExtra(UID,news.getNid());
+            startActivity(intent);
+        });
         mRecy.setAdapter(mNewsListAdapter);
     }
 
@@ -62,14 +69,8 @@ public class HomeActivity extends BaseActivity<HomePresenter, NewsList.NewsEntit
 
     @Override
     public void loadData() {
-        mPresenter.loadData();
+        mPresenter.loadData(null);
     }
 
-    /**
-     * 更新页面
-     */
-    @Override
-    public void updateState(int state) {
-        mLoadStuatus.updateView(state);
-    }
+
 }

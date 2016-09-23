@@ -5,6 +5,8 @@ import android.content.Context;
 import com.example.zhangqi.newtest.mvp.presenter.BasePresenter;
 import com.example.zhangqi.newtest.mvp.view.BaseView;
 
+import java.util.Map;
+
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -37,7 +39,7 @@ public abstract class BasePresenterImpl<V extends BaseView> implements BasePrese
     /**
      * 加载数据
      */
-    public abstract void loadData();
+    public abstract void loadData(Map<String,String> map);
 
     //RXjava取消注册，以避免内存泄露
     public void onUnsubscribe() {

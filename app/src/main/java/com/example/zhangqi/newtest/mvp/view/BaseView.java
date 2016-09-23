@@ -1,5 +1,7 @@
 package com.example.zhangqi.newtest.mvp.view;
 
+import com.example.zhangqi.newtest.manager.LoadStuatus;
+
 /**
  * Created by zhangqi on 2016/9/12.
  */
@@ -15,4 +17,6 @@ public interface BaseView {
      * @param state
      */
     void updateState(int state);
+
+    LoadStuatus getLoadView();
 }

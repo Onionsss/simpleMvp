@@ -1,12 +1,18 @@
 package com.example.zhangqi.newtest.manager;
 
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.zhangqi.newtest.R;
 import com.example.zhangqi.newtest.mvp.view.BaseView;
+import com.jakewharton.rxbinding.view.RxView;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,18 +49,18 @@ public class LoadStuatus extends FrameLayout {
         init();
     }
 
-    public void addSuccessView(View view){
+    public void addSuccessView(View view,BaseView view1){
         successView = view;
         addView(successView);
         successView.setVisibility(GONE);
-    }
-    public void bindView(BaseView view) {
-        this.nView = view;
-        mErrorView.setOnClickListener(v -> {
-            if(nView == null)
-                throw new NoBindViewException("没有绑定View");
-            nView.loadData();
-        });
+
+        this.nView = view1;
+        RxView.clicks(mErrorView).throttleFirst(5, TimeUnit.SECONDS)
+                .subscribe(v -> {
+                    if(nView == null)
+                        throw new NoBindViewException("没有绑定View");
+                    nView.loadData();
+                });
     }
 
     public void init() {
@@ -63,21 +69,18 @@ public class LoadStuatus extends FrameLayout {
     }
 
     public void updateView(int currentStatus) {
+        successView.setVisibility(GONE);
+        mErrorView.setVisibility(GONE);
+        mLoadingView.setVisibility(GONE);
         switch (currentStatus) {
             case STATUS_ERROR:
-                successView.setVisibility(GONE);
                 mErrorView.setVisibility(VISIBLE);
-                mLoadingView.setVisibility(GONE);
                 break;
             case STATUS_LOADING:
-                successView.setVisibility(GONE);
-                mErrorView.setVisibility(GONE);
                 mLoadingView.setVisibility(VISIBLE);
                 break;
             case STATUS_SUCCESS:
                 successView.setVisibility(VISIBLE);
-                mErrorView.setVisibility(GONE);
-                mLoadingView.setVisibility(GONE);
                 break;
         }
     }
@@ -85,6 +88,17 @@ public class LoadStuatus extends FrameLayout {
     public class NoBindViewException extends RuntimeException{
         public NoBindViewException(String info){
             super(info);
+        }
+    }
+
+    /**
+     * error的统一处理
+     * @param error
+     */
+    public void error(Throwable error){
+        Log.d(TAG, "error: "+error.toString());
+        if(error instanceof NetworkErrorException){
+            Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
         }
     }
 }

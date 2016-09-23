@@ -2,14 +2,16 @@ package com.example.zhangqi.newtest.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.zhangqi.newtest.R;
 import com.example.zhangqi.newtest.bean.NewsList;
+import com.example.zhangqi.newtest.listener.OnItemClickListener;
 import com.example.zhangqi.newtest.ui.Home.HomeActivity;
 
 import java.util.ArrayList;
@@ -42,21 +44,31 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     public void onBindViewHolder(NewsListHolder holder, int position) {
         NewsList.NewsEntity newsList = mList.get(position);
         holder.tv_title.setText(newsList.getTitle());
+
+        holder.itemView.setOnClickListener(v -> {
+            if(mOnItemClickListener != null)mOnItemClickListener.onItemClick(newsList);
+        });
+
+        Glide.with(mContext).load(newsList.getBackground()).into(holder.iv_image);
     }
 
     @Override
     public int getItemCount() {
-        Log.d("TAG", "getItemCount: "+mList.size());
         return mList.size();
     }
 
     static class NewsListHolder extends RecyclerView.ViewHolder{
         @Bind(R.id.tv_title)
         TextView tv_title;
-
+        @Bind(R.id.iv_background)
+        ImageView iv_image;
         public NewsListHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+    private OnItemClickListener mOnItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mOnItemClickListener = onItemClickListener;
     }
 }
