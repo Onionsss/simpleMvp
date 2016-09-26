@@ -22,9 +22,9 @@ public class DeteilPresenter extends BasePresenterImpl<DeteilActivity>{
 
     @Override
     public void loadData(Map<String, String> map) {
-        RetrofitUtils.getinstance(mContext).buildNews().getNewsDetail(map.get(HomeActivity.DATE),HomeActivity.DATE)
+        RetrofitUtils.getinstance(mContext).buildNews().getNewsDetail(map.get(HomeActivity.DATE),map.get(HomeActivity.UID))
                 .compose(TransformUtils.defaultSchedulers())
-                .subscribe(new SubscribeCall<String>(mBaseView.getLoadView(),new SubscribeCall.SimpleSubscribeImpl<String>(){
+                .subscribe(new SubscribeCall<>(mBaseView, new SubscribeCall.SimpleSubscribeImpl<String>() {
                     @Override
                     public void onNext(String data) {
                         super.onNext(data);

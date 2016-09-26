@@ -10,5 +10,4 @@ public interface BaseViewImpl<D> extends BaseView{
     void attachPre();
 
     void showData(D data);
-
 }

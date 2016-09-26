@@ -71,6 +71,4 @@ public class HomeActivity extends BaseActivity<HomePresenter, List<NewsList.News
     public void loadData() {
         mPresenter.loadData(null);
     }
-
-
 }

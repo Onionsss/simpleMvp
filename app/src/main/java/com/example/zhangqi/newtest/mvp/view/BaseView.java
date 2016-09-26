@@ -18,5 +18,7 @@ public interface BaseView {
      */
     void updateState(int state);
 
+    void error(Throwable e);
+
     LoadStuatus getLoadView();
 }

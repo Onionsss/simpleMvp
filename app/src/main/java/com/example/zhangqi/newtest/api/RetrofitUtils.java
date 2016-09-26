@@ -29,12 +29,11 @@ public class RetrofitUtils {
     public Api buildNews(){
         if(mRetrofit == null){
             mRetrofit = new Retrofit.Builder().baseUrl("http://dota2xufserver.duapp.com")
-                    .addConverterFactory(GsonConverterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
         }
         return mRetrofit.create(Api.class);
     }
-
 }

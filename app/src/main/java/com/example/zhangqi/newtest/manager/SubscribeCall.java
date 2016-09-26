@@ -1,18 +1,22 @@
 package com.example.zhangqi.newtest.manager;
 
+import com.example.zhangqi.newtest.mvp.view.BaseView;
+
 import rx.Subscriber;
 
 /**
  * Created by zhangqi on 2016/9/23.
  */
 
-public class SubscribeCall<T> extends Subscriber<T>{
+public class SubscribeCall<T,V extends BaseView> extends Subscriber<T>{
 
     private LoadStuatus mLoadStuatus;
+    private V mBaseView;
     private SimpleSubscribeImpl<T> mCallBack;
 
-    public SubscribeCall(LoadStuatus loadStuatus, SimpleSubscribeImpl<T> simpleSubscribe) {
-        mLoadStuatus = loadStuatus;
+    public SubscribeCall(V baseView, SimpleSubscribeImpl<T> simpleSubscribe) {
+        this.mBaseView = baseView;
+        this.mLoadStuatus = mBaseView.getLoadView();
         this.mCallBack = simpleSubscribe;
     }
 
@@ -30,7 +34,7 @@ public class SubscribeCall<T> extends Subscriber<T>{
 
     @Override
     public void onError(Throwable e) {
-        mLoadStuatus.error(e);
+        mBaseView.error(e);
         mLoadStuatus.updateView(LoadStuatus.STATUS_ERROR);
         mCallBack.onError(e);
     }

@@ -25,7 +25,8 @@ public class HomePresenter extends BasePresenterImpl<HomeActivity>{
     public void loadData(Map<String,String> map) {
         Subscription subscribe = RetrofitUtils.getinstance(mContext).buildNews().getNews()
                .compose(TransformUtils.defaultSchedulers())
-                .subscribe(new SubscribeCall<NewsList>(mBaseView.getLoadView(), new SubscribeCall.SimpleSubscribeImpl<NewsList>() {
+                .subscribe(new SubscribeCall<>(mBaseView
+                        , new SubscribeCall.SimpleSubscribeImpl<NewsList>() {
                     @Override
                     public void onNext(NewsList bean) {
                         super.onNext(bean);

@@ -1,12 +1,9 @@
 package com.example.zhangqi.newtest.manager;
 
-import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.example.zhangqi.newtest.R;
 import com.example.zhangqi.newtest.mvp.view.BaseView;
@@ -91,14 +88,5 @@ public class LoadStuatus extends FrameLayout {
         }
     }
 
-    /**
-     * error的统一处理
-     * @param error
-     */
-    public void error(Throwable error){
-        Log.d(TAG, "error: "+error.toString());
-        if(error instanceof NetworkErrorException){
-            Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
-        }
-    }
+
 }
