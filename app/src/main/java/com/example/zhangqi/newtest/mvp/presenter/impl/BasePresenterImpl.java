@@ -14,7 +14,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by zhangqi on 2016/9/12.
  */
 public abstract class BasePresenterImpl<V extends BaseView> implements BasePresenter<V>{
-
+    public String TAG = this.getClass().getName();
     public Context mContext;
 
     public V mBaseView;

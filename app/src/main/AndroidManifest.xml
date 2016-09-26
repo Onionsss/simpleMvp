@@ -3,6 +3,7 @@
           package="com.example.zhangqi.newtest">
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <application
+        android:name=".global.AppCenter"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

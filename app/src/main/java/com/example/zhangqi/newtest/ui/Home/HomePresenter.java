@@ -10,8 +10,6 @@ import com.example.zhangqi.newtest.mvp.presenter.impl.BasePresenterImpl;
 
 import java.util.Map;
 
-import rx.Subscription;
-
 /**
  * Created by zhangqi on 2016/9/12.
  */
@@ -23,16 +21,16 @@ public class HomePresenter extends BasePresenterImpl<HomeActivity>{
 
     @Override
     public void loadData(Map<String,String> map) {
-        Subscription subscribe = RetrofitUtils.getinstance(mContext).buildNews().getNews()
+        addSubscription(RetrofitUtils.getinstance(mContext).buildNews()
+                .getNews()
                .compose(TransformUtils.defaultSchedulers())
-                .subscribe(new SubscribeCall<>(mBaseView
-                        , new SubscribeCall.SimpleSubscribeImpl<NewsList>() {
+                .subscribe(new SubscribeCall<>(mBaseView, new SubscribeCall.SimpleSubscribeImpl<NewsList>() {
                     @Override
-                    public void onNext(NewsList bean) {
-                        super.onNext(bean);
-                        mBaseView.showData(bean.getNews());
+                    public void onNext(NewsList data) {
+                        super.onNext(data);
+                        mBaseView.showData(data.getNews());
                     }
-                }));
-        addSubscription(subscribe);
+                })));
+
     }
 }

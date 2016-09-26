@@ -12,9 +12,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 public class RetrofitUtils {
     private Context mContext;
-    private static Retrofit mRetrofit;
+    private static Retrofit sRetrofit;
     private static RetrofitUtils sRetrofitUtil;
-
+    private String mBaseUrl = "http://dota2xufserver.duapp.com";
     private RetrofitUtils(Context context){
         mContext = context;
     }
@@ -27,13 +27,17 @@ public class RetrofitUtils {
     }
 
     public Api buildNews(){
-        if(mRetrofit == null){
-            mRetrofit = new Retrofit.Builder().baseUrl("http://dota2xufserver.duapp.com")
+        if(sRetrofit == null){
+            sRetrofit = new Retrofit.Builder().baseUrl(mBaseUrl)
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
         }
-        return mRetrofit.create(Api.class);
+        return sRetrofit.create(Api.class);
+    }
+    public RetrofitUtils baseUrl(String url){
+        mBaseUrl = url;
+        return sRetrofitUtil;
     }
 }

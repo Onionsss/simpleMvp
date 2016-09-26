@@ -10,7 +10,7 @@ import com.example.zhangqi.newtest.R;
 import com.example.zhangqi.newtest.adapter.NewsListAdapter;
 import com.example.zhangqi.newtest.bean.NewsList;
 import com.example.zhangqi.newtest.manager.LoadStuatus;
-import com.example.zhangqi.newtest.ui.BaseActivity;
+import com.example.zhangqi.newtest.mvp.baseactivity.BaseActivity;
 import com.example.zhangqi.newtest.ui.deteil.DeteilActivity;
 
 import java.util.List;

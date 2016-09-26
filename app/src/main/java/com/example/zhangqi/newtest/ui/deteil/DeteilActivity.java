@@ -3,16 +3,14 @@ package com.example.zhangqi.newtest.ui.deteil;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.example.zhangqi.newtest.R;
 import com.example.zhangqi.newtest.manager.LoadStuatus;
-import com.example.zhangqi.newtest.ui.BaseActivity;
+import com.example.zhangqi.newtest.mvp.baseactivity.BaseActivity;
 import com.example.zhangqi.newtest.ui.Home.HomeActivity;
+import com.example.zhangqi.newtest.utils.UtilsCollection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +27,7 @@ public class DeteilActivity extends BaseActivity<DeteilPresenter, String> {
     ProgressBar mWebview_progressbar;
     @Bind(R.id.webview)
     WebView mWebView;
+
     private String mDate;
     private String mUid;
 
@@ -58,33 +57,7 @@ public class DeteilActivity extends BaseActivity<DeteilPresenter, String> {
 
     @Override
     public void showData(String list) {
-        WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDefaultTextEncodingName("UTF-8");
-        settings.setSupportZoom(false);
-        settings.setPluginState(WebSettings.PluginState.ON);
-        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
-                    mWebview_progressbar.setVisibility(View.GONE);
-                } else {
-                    mWebview_progressbar.setVisibility(View.VISIBLE);
-                    mWebview_progressbar.setProgress(newProgress);
-                }
-            }
-        });
-
-        mWebView.setWebViewClient(new WebViewClient() {
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-        });
-
-        mWebView.loadDataWithBaseURL(null, list, "text/html", "UTF-8", null);
+        UtilsCollection.loadWebView(mWebview_progressbar,mWebView,list);
     }
 
     @Override
@@ -97,6 +70,5 @@ public class DeteilActivity extends BaseActivity<DeteilPresenter, String> {
         map.put(HomeActivity.UID, mUid);
         mPresenter.loadData(map);
     }
-
 
 }

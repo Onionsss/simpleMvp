@@ -1,6 +1,7 @@
 package com.example.zhangqi.newtest.ui.deteil;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.zhangqi.newtest.api.RetrofitUtils;
 import com.example.zhangqi.newtest.manager.SubscribeCall;
@@ -22,14 +23,13 @@ public class DeteilPresenter extends BasePresenterImpl<DeteilActivity>{
 
     @Override
     public void loadData(Map<String, String> map) {
-        RetrofitUtils.getinstance(mContext).buildNews().getNewsDetail(map.get(HomeActivity.DATE),map.get(HomeActivity.UID))
+        addSubscription( RetrofitUtils.getinstance(mContext).buildNews()
+                .getNewsDetail(map.get(HomeActivity.DATE),map.get(HomeActivity.UID))
                 .compose(TransformUtils.defaultSchedulers())
-                .subscribe(new SubscribeCall<>(mBaseView, new SubscribeCall.SimpleSubscribeImpl<String>() {
-                    @Override
-                    public void onNext(String data) {
-                        super.onNext(data);
-                        mBaseView.showData(data);
-                    }
-                }));
+                .subscribe(new SubscribeCall<>(mBaseView, s -> {
+                    mBaseView.showData(s);
+                }, throwable -> {
+                    Log.d(TAG, "call: "+ throwable.toString());
+                })));
     }
 }

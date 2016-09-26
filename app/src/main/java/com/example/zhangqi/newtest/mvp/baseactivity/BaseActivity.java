@@ -1,4 +1,4 @@
-package com.example.zhangqi.newtest.ui;
+package com.example.zhangqi.newtest.mvp.baseactivity;
 
 import android.accounts.NetworkErrorException;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import retrofit2.adapter.rxjava.HttpException;
  * Created by zhangqi on 2016/9/12.
  */
 public abstract class BaseActivity<T extends BasePresenter,D> extends AppCompatActivity implements BaseViewImpl<D>{
-
     public LoadStuatus mLoadStuatus;
     public T mPresenter;
     private View mView;
@@ -74,15 +73,17 @@ public abstract class BaseActivity<T extends BasePresenter,D> extends AppCompatA
     public void error(Throwable error){
         if(error instanceof NetworkErrorException){
             Toast.makeText(this,"网络错误", Toast.LENGTH_SHORT).show();
-        }
+        }else
         if(error instanceof HttpException){
             Toast.makeText(this,"服务器爆炸!!!", Toast.LENGTH_SHORT).show();
-        }
+        }else
         if(error instanceof UnknownHostException){
             Toast.makeText(this,"网络错误!", Toast.LENGTH_SHORT).show();
-        }
+        }else
         if((MalformedJsonException)error instanceof MalformedJsonException){
             Toast.makeText(this,"Gson!", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,"网络错误!", Toast.LENGTH_SHORT).show();
         }
     }
 }
