@@ -21,7 +21,7 @@ public class HomePresenter extends BasePresenterImpl<HomeActivity>{
 
     @Override
     public void loadData(Map<String,String> map) {
-        addSubscription(RetrofitUtils.getinstance(mContext).buildNews()
+        addSubscription(RetrofitUtils.getInstance().buildNews()
                 .getNews()
                .compose(TransformUtils.defaultSchedulers())
                 .subscribe(new SubscribeCall<>(mBaseView, new SubscribeCall.SimpleSubscribeImpl<NewsList>() {
